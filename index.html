@@ -1,0 +1,402 @@
+<title>محاكي مسابقة أستاذ مساعد "ب"</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: official scoring sheet — form sections on the right (RTL), a sticky score ledger on the left, profile assessment below. */
+:root{
+  --paper:#f3f6f4; --sheet:#ffffff; --ink:#14302b; --muted:#5d716c; --line:#d5e0db;
+  --accent:#0d6e53; --accent-soft:#e0efe9; --seal:#b3261e; --seal-soft:#f8e4e2; --gold:#9a700c; --gold-soft:#f6eed8; --bar-bg:#e7eeea;
+  --display:"Reem Kufi","IBM Plex Sans Arabic",system-ui,sans-serif;
+  --body:"IBM Plex Sans Arabic",system-ui,"Segoe UI",Tahoma,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0f1916; --sheet:#16231f; --ink:#e3ece8; --muted:#94aaa3; --line:#2a3b36;
+  --accent:#4cc39a; --accent-soft:#1b3a30; --seal:#f08a80; --seal-soft:#3b201e; --gold:#e0b64d; --gold-soft:#352c14; --bar-bg:#223430; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0f1916; --sheet:#16231f; --ink:#e3ece8; --muted:#94aaa3; --line:#2a3b36;
+  --accent:#4cc39a; --accent-soft:#1b3a30; --seal:#f08a80; --seal-soft:#3b201e; --gold:#e0b64d; --gold-soft:#352c14; --bar-bg:#223430; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;padding-inline:16px;padding-block:24px 48px}
+.wrap{max-width:1180px;margin-inline:auto;display:flex;flex-direction:column;gap:24px}
+header h1{font-family:var(--display);font-weight:700;font-size:clamp(1.5rem,3.4vw,2.2rem);margin:0;text-wrap:balance;line-height:1.3}
+header p{margin:4px 0 0;color:var(--muted);max-width:70ch}
+.eyebrow{font-size:.8rem;letter-spacing:.04em;color:var(--accent);font-weight:600}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+.grid.solo{grid-template-columns:minmax(0,1fr)}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.sections{display:flex;flex-direction:column;gap:16px;min-width:0}
+section.crit{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+.crit-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.crit-head h2{margin:0;font-size:1.05rem;font-weight:700}
+.crit-head h2 span{color:var(--muted);font-family:var(--mono);font-size:.85rem;margin-inline-end:6px}
+.pts{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.95rem;color:var(--accent);white-space:nowrap}
+.pts small{color:var(--muted)}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+label{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--muted);font-weight:500}
+input,select,button{font:inherit;color:var(--ink)}
+input[type=text],input[type=date],input[type=number],select{background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:7px 10px;width:100%;min-width:0}
+input[type=number]{font-family:var(--mono);font-variant-numeric:tabular-nums}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.hint{font-size:.8rem;color:var(--muted);margin:0}
+.warn{color:var(--gold)}
+.pubs{display:flex;flex-direction:column;gap:8px}
+.pub{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr) 70px 34px;gap:8px;align-items:center}
+.pub .v{font-family:var(--mono);text-align:center;font-variant-numeric:tabular-nums}
+@media (max-width:480px){.pub{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.pub .v{text-align:start}}
+.btn{background:var(--accent);color:var(--sheet);border:0;border-radius:6px;padding:8px 14px;font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn.icon{background:transparent;color:var(--muted);border:1px solid var(--line);padding:4px 0;width:34px}
+.btn.icon:hover{color:var(--seal);border-color:var(--seal)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.interview{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.slider{display:flex;flex-direction:column;gap:4px}
+.slider .top{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted)}
+.slider .top b{font-family:var(--mono);color:var(--ink);font-weight:500}
+input[type=range]{accent-color:var(--accent);width:100%}
+/* ledger */
+aside.ledger{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
+@media (max-width:900px){aside.ledger{position:static}}
+.total{display:flex;align-items:baseline;gap:6px;justify-content:center;padding-block:4px 6px}
+.total b{font-family:var(--display);font-size:3.2rem;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+.total span{font-family:var(--mono);color:var(--muted)}
+.verdict{text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px}
+.lines{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.lines li{display:flex;flex-direction:column;gap:4px}
+.lines .t{display:flex;justify-content:space-between;gap:8px;font-size:.85rem}
+.lines .t b{font-family:var(--mono);font-weight:500;font-variant-numeric:tabular-nums;white-space:nowrap}
+.bar{height:6px;background:var(--bar-bg);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:3px;transition:width .25s}
+.bar i.full{background:var(--gold)}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+.cap-note{font-size:.78rem;color:var(--gold)}
+.potential{font-size:.82rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px}
+.potential b{font-family:var(--mono);color:var(--ink);font-weight:500}
+/* assessment */
+.assess:focus{outline:none}
+.assess{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:18px}
+.assess h2{margin:0;font-family:var(--display);font-weight:500;font-size:1.35rem}
+.assess h3{margin:0;font-size:.95rem;font-weight:700}
+.chip{display:inline-block;font-size:.75rem;font-weight:600;padding:1px 10px;border-radius:999px;white-space:nowrap}
+.chip.good{background:var(--accent-soft);color:var(--accent)}
+.chip.mid{background:var(--gold-soft);color:var(--gold)}
+.chip.weak{background:var(--seal-soft);color:var(--seal)}
+.prio{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;counter-reset:p}
+.prio li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:start;padding:10px 12px;border:1px solid var(--line);border-radius:8px;counter-increment:p}
+.prio li::before{content:counter(p);display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--sheet);font-family:var(--mono);font-size:.85rem}
+.prio .gain{font-family:var(--mono);color:var(--accent);white-space:nowrap}
+.prio .eff{display:block;font-size:.75rem;color:var(--muted)}
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.note{border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.note .h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.note .h strong{font-size:.9rem}
+.note p{margin:0;font-size:.86rem}
+.note ul{margin:0;padding-inline-start:18px;font-size:.86rem;display:flex;flex-direction:column;gap:2px}
+.done{color:var(--muted);font-size:.86rem;margin:0}
+footer{color:var(--muted);font-size:.8rem;max-width:80ch}
+</style>
+
+<div class="wrap" dir="rtl" lang="ar">
+  <header>
+    <div class="eyebrow">شبكة التنقيط الوزارية · مجموع 20 نقطة</div>
+    <h1>محاكي مسابقة توظيف أستاذ مساعد قسم "ب"</h1>
+    <p>أدخل ملفك لتحصل على علامتك حسب كل معيار مع تطبيق الحدود القصوى، ثم اقرأ تقييم ملفك في الأسفل: نقاط القوة، نقاط الضعف، وما يجب تحسينه أولاً.</p>
+  </header>
+
+  <div class="grid solo" id="grid">
+    <form class="sections" id="form" autocomplete="off">
+      <section class="crit">
+        <div class="crit-head"><h2>بيانات المسابقة</h2></div>
+        <div class="fields">
+          <label>تاريخ فتح المسابقة<input type="date" id="open"></label>
+        </div>
+      </section>
+
+      <section class="crit">
+        <div class="crit-head"><h2><span>1</span>ملاءمة شعبة وتخصص الشهادة</h2><div class="pts" id="p1"></div></div>
+        <label>ترتيب تخصصك في إعلان الجامعة
+          <select id="spec">
+            <option value="2">التخصص الأول المطلوب مباشرة — 2</option>
+            <option value="1.75">تخصص قريب (الترتيب 2) — 1.75</option>
+            <option value="1.5">تخصص قريب (الترتيب 3) — 1.5</option>
+            <option value="1.25">تخصص قريب (الترتيب 4) — 1.25</option>
+            <option value="1">تخصص ذو صلة (الترتيب 5) — 1</option>
+            <option value="0.75">تخصص ذو صلة (الترتيب 6) — 0.75</option>
+            <option value="0.5">تخصص ذو صلة (الترتيب 7) — 0.5</option>
+            <option value="0.25">تخصص ذو صلة (الترتيب 8) — 0.25</option>
+            <option value="0">غير مطابق — 0</option>
+          </select>
+        </label>
+        <p class="hint">تحدد اللجنة قيمة التخصصات القريبة بين 0.25 و1.75 حسب ترتيبها في الإعلان وديمغرافية الشعبة.</p>
+      </section>
+
+      <section class="crit">
+        <div class="crit-head"><h2><span>2</span>تقدير الشهادة</h2><div class="pts" id="p2"></div></div>
+        <label>التقدير
+          <select id="mention">
+            <option value="1">مشرف جداً (Très Honorable) — 1</option>
+            <option value="0.5">مشرف (Honorable) / شهادة أجنبية معادلة — 0.5</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="crit">
+        <div class="crit-head"><h2><span>3</span>أقدمية الشهادة</h2><div class="pts" id="p3"></div></div>
+        <label>تاريخ الحصول على الدكتوراه<input type="date" id="phd"></label>
+        <p class="hint" id="senHint"></p>
+      </section>
+
+      <section class="crit">
+        <div class="crit-head"><h2><span>4</span>الأعمال والمنشورات والمداخلات</h2><div class="pts" id="p4"></div></div>
+        <div class="crit-head"><strong style="font-size:.92rem">المنشورات وبراءات الاختراع والكتب</strong><div class="pts" id="p4a"></div></div>
+        <div class="pubs" id="pubs"></div>
+        <div class="row"><button type="button" class="btn ghost" id="addPub">+ إضافة منشور</button>
+          <span class="hint">نسبة المساهمة: مؤلف أول 100٪، ثانٍ 50٪، ثالث فأكثر 25٪.</span></div>
+        <div class="crit-head" style="margin-top:6px"><strong style="font-size:.92rem">المداخلات العلمية</strong><div class="pts" id="p4b"></div></div>
+        <div class="fields">
+          <label>عدد المداخلات الدولية (0.5 لكل، حد 2)<input type="number" id="confI" min="0" step="1" inputmode="numeric"></label>
+          <label>عدد المداخلات الوطنية (0.5 لكل، حد 1)<input type="number" id="confN" min="0" step="1" inputmode="numeric"></label>
+        </div>
+      </section>
+
+      <section class="crit">
+        <div class="crit-head"><h2><span>5</span>الخبرة المهنية</h2><div class="pts" id="p5"></div></div>
+        <div class="fields">
+          <label>سداسيات دروس Cours (0.5، حد 3)<input type="number" id="cours" min="0" step="1" inputmode="numeric"></label>
+          <label>سداسيات أعمال موجهة TD (0.25، حد 1.5)<input type="number" id="td" min="0" step="1" inputmode="numeric"></label>
+          <label>سنوات أعمال تطبيقية TP (0.25، حد 1.5)<input type="number" id="tp" min="0" step="1" inputmode="numeric"></label>
+          <label>سنوات خبرة في قطاعات أخرى / تأطير (0.5، حد 1.5)<input type="number" id="other" min="0" step="1" inputmode="numeric"></label>
+        </div>
+        <p class="hint" id="expHint"></p>
+      </section>
+
+      <section class="crit">
+        <div class="crit-head"><h2><span>6</span>المقابلة مع لجنة الانتقاء (تقدير ذاتي)</h2><div class="pts" id="p6"></div></div>
+        <div class="interview" id="interview"></div>
+      </section>
+
+      <div class="row">
+        <button type="button" class="btn" data-eval>تقييم ملفي</button>
+        <button type="button" class="btn ghost" id="reset">إفراغ الاستمارة</button>
+        <button type="button" class="btn ghost" id="sample">تحميل مثال</button>
+      </div>
+    </form>
+
+    <aside class="ledger" id="ledger" aria-label="ملخص العلامة" hidden>
+      <div class="eyebrow">العلامة النهائية المتوقعة</div>
+      <div class="total" style="padding-bottom:12px;border-bottom:1px dashed var(--line)"><b id="total">0</b><span>/ 20</span></div>
+      <div class="verdict" id="verdict"></div>
+      <ul class="lines" id="lines"></ul>
+      <div class="potential" id="potential"></div>
+      <button type="button" class="btn" data-eval>تقييم ملفي</button>
+    </aside>
+  </div>
+
+  <section class="assess" id="assess" aria-live="polite" hidden tabindex="-1">
+    <div class="crit-head"><h2>تقييم ملفك</h2><span class="hint">يتحدث تلقائياً مع كل تعديل</span></div>
+    <div>
+      <h3>أولويات التحسين</h3>
+      <p class="hint" style="margin-block:2px 10px">مرتبة حسب النقاط التي يمكن كسبها مقابل الجهد المطلوب.</p>
+      <ol class="prio" id="prio"></ol>
+    </div>
+    <div>
+      <h3 style="margin-bottom:10px">ملاحظات حسب المعيار</h3>
+      <div class="notes" id="notes"></div>
+    </div>
+  </section>
+
+  <footer>أداة محاكاة تقريبية مبنية على الشبكة كما وردت في الملف المرفق. قد تختلف تفاصيل التطبيق بين الجامعات، والعلامة المطلوبة للنجاح تختلف حسب عدد المترشحين في كل تخصص؛ يُرجع دائماً إلى القرار الوزاري ومحضر اللجنة.</footer>
+</div>
+
+<script>
+const PUB_TYPES=[
+  {k:"Ap",l:"مقال صنف A+",v:5},{k:"A",l:"مقال صنف A",v:4},{k:"PCT",l:"براءة اختراع دولية (PCT)",v:4},
+  {k:"B",l:"مقال صنف B",v:3},{k:"INAPI",l:"براءة اختراع وطنية (INAPI)",v:3},{k:"C",l:"مقال صنف C",v:1.5},{k:"BOOK",l:"كتاب علمي (ISBN)",v:1.5}];
+const ROLES=[{k:1,l:"مؤلف أول (100٪)",f:1},{k:2,l:"مؤلف ثانٍ (50٪)",f:.5},{k:3,l:"ثالث فأكثر (25٪)",f:.25}];
+const INTERVIEW=["القدرة على التحليل والتلخيص","وضوح الخطاب واللغة","القدرة على التواصل","المهارات والقدرات العلمية الخاصة"];
+const IV_TIPS=[
+  "تدرّب على تلخيص أطروحتك في دقيقتين ثم في ثلاث جمل: المشكلة، المساهمة، النتيجة.",
+  "حضّر عرضك بلغة التدريس المعتمدة في القسم، وتجنب الخلط بين اللغات أثناء الإجابة.",
+  "تدرب على مقابلة تجريبية مع زملاء: أجب بهدوء، حافظ على التواصل البصري، ولا تقاطع اللجنة.",
+  "اربط تخصصك بمقاييس القسم: حضّر قائمة بالمقاييس التي تستطيع تدريسها ومشروع بحث للسنوات القادمة."];
+const CRIT=[["ملاءمة التخصص",2],["تقدير الشهادة",1],["أقدمية الشهادة",2],["المنشورات والمداخلات",8],["الخبرة المهنية",3],["المقابلة",4]];
+const $=id=>document.getElementById(id);
+const fmt=n=>(Math.round(n*100)/100).toLocaleString("en-US",{maximumFractionDigits:2});
+const num=id=>Math.max(0,parseFloat($(id).value)||0);
+const today=new Date().toISOString().slice(0,10);
+let pubs=[];
+
+function fullYears(from,to){
+  if(!from||!to)return 0;const a=new Date(from),b=new Date(to);if(b<a)return 0;
+  let y=b.getFullYear()-a.getFullYear();
+  if(b.getMonth()<a.getMonth()||(b.getMonth()===a.getMonth()&&b.getDate()<a.getDate()))y--;
+  return Math.max(0,y);
+}
+
+function score(c){
+  const s1=+c.spec, s2=+c.mention;
+  const yrs=fullYears(c.phd,c.open), s3=Math.min(2,yrs*.25);
+  const rawPub=c.pubs.reduce((t,p)=>t+(PUB_TYPES.find(x=>x.k===p.t)?.v||0)*(ROLES.find(r=>r.k==p.r)?.f||0),0);
+  const pubPts=Math.min(5,rawPub);
+  const confIPts=Math.min(2,c.confI*.5), confNPts=Math.min(1,c.confN*.5), confPts=confIPts+confNPts;
+  const s4=pubPts+confPts;
+  const exp={cours:Math.min(3,c.cours*.5),td:Math.min(1.5,c.td*.25),tp:Math.min(1.5,c.tp*.25),other:Math.min(1.5,c.other*.5)};
+  const rawExp=exp.cours+exp.td+exp.tp+exp.other, s5=Math.min(3,rawExp);
+  const s6=c.iv.reduce((a,b)=>a+ +b,0);
+  const parts=[s1,s2,s3,s4,s5,s6];
+  return {parts,total:parts.reduce((a,b)=>a+b,0),yrs,rawPub,pubPts,confIPts,confNPts,confPts,exp,rawExp};
+}
+
+function readForm(){
+  return {open:$("open").value,spec:$("spec").value,mention:$("mention").value,phd:$("phd").value,pubs,
+    confI:num("confI"),confN:num("confN"),cours:num("cours"),td:num("td"),tp:num("tp"),other:num("other"),
+    iv:INTERVIEW.map((_,i)=>$("iv"+i).value)};
+}
+function fillForm(c){
+  $("open").value=c.open||today;$("spec").value=c.spec;$("mention").value=c.mention;$("phd").value=c.phd||"";
+  pubs=(c.pubs||[]).map(p=>({...p}));
+  ["confI","confN","cours","td","tp","other"].forEach(k=>$(k).value=c[k]||0);
+  INTERVIEW.forEach((_,i)=>$("iv"+i).value=c.iv?.[i]??0);
+  renderPubs();update();
+}
+
+function renderPubs(){
+  const box=$("pubs");box.innerHTML="";
+  if(!pubs.length){box.innerHTML='<p class="hint">لا توجد منشورات بعد.</p>';return;}
+  pubs.forEach((p,i)=>{
+    const d=document.createElement("div");d.className="pub";
+    d.innerHTML=`<select id="pt${i}" aria-label="نوع المنشور">${PUB_TYPES.map(t=>`<option value="${t.k}"${t.k===p.t?" selected":""}>${t.l} — ${t.v}</option>`).join("")}</select>
+      <select id="pr${i}" aria-label="ترتيبك في قائمة المؤلفين">${ROLES.map(r=>`<option value="${r.k}"${r.k==p.r?" selected":""}>${r.l}</option>`).join("")}</select>
+      <span class="v" id="pv${i}"></span><button type="button" class="btn icon" aria-label="حذف المنشور" data-del="${i}">✕</button>`;
+    box.appendChild(d);
+    d.querySelector(`#pt${i}`).addEventListener("change",e=>{p.t=e.target.value;update()});
+    d.querySelector(`#pr${i}`).addEventListener("change",e=>{p.r=+e.target.value;update()});
+    d.querySelector("[data-del]").addEventListener("click",()=>{pubs.splice(i,1);renderPubs();update()});
+  });
+}
+
+/* ---------- assessment ---------- */
+function level(v,cap){const r=cap?v/cap:0;return r>=.999?["good","ممتاز"]:r>=.6?["good","جيد"]:r>=.3?["mid","متوسط"]:["weak","ضعيف"];}
+function chip(v,cap){const [c,l]=level(v,cap);return `<span class="chip ${c}">${l}</span>`;}
+
+function assess(c,r){
+  const notes=[], prio=[];
+  // 1 specialty
+  const s1=r.parts[0];
+  notes.push({t:"1. ملاءمة التخصص",v:s1,cap:2,html: s1>=2
+    ? "<p>تخصصك هو المطلوب مباشرة في الإعلان، وهذه أفضل وضعية ممكنة.</p>"
+    : `<p>تفقد <b>${fmt(2-s1)}</b> نقطة لأن تخصصك ليس الأول في الإعلان. لا يمكن تحسين هذا المعيار بعد الإيداع.</p><ul><li>استهدف المناصب التي يرد فيها تخصصك بالضبط في المرتبة الأولى.</li><li>راجع تسمية تخصصك في الشهادة ومحضر المناقشة وقارنها حرفياً مع الإعلان.</li></ul>`});
+  // 2 mention
+  notes.push({t:"2. تقدير الشهادة",v:r.parts[1],cap:1,html: r.parts[1]>=1
+    ? "<p>تقدير مشرف جداً يمنحك النقطة كاملة.</p>"
+    : "<p>تقدير مشرف يمنحك 0.5 فقط، وهو معيار ثابت لا يمكن تحسينه. عوّض الفارق في المنشورات والمداخلات.</p>"});
+  // 3 seniority
+  const s3=r.parts[2];
+  let h3;
+  if(!c.phd) h3="<p>أدخل تاريخ الحصول على الدكتوراه لحساب هذا المعيار.</p>";
+  else if(s3>=2) h3=`<p>أقدميتك ${r.yrs} سنوات أو أكثر، فتحصل على الحد الأقصى.</p>`;
+  else h3=`<p>أقدميتك ${r.yrs} سنة كاملة. تكسب 0.25 كل سنة إضافية، وتبلغ الحد الأقصى بعد ${8-r.yrs} سنة أخرى.</p><ul><li>لا يمكن تسريع هذا المعيار، لكنه يعني أن كل مسابقة مقبلة ترفع علامتك تلقائياً.</li><li>الأقدمية هي ثالث معيار للفصل عند التساوي.</li></ul>`;
+  notes.push({t:"3. أقدمية الشهادة",v:s3,cap:2,html:h3});
+
+  // 4 publications
+  const gapPub=5-r.pubPts, firstAuth=c.pubs.filter(p=>p.r==1).length, coAuth=c.pubs.length-firstAuth;
+  let h4="<ul>";
+  if(gapPub<=1e-9){
+    h4+=`<li>منشوراتك تبلغ الحد الأقصى (5 نقاط).${r.rawPub>5?` لديك ${fmt(r.rawPub-5)} نقطة زائدة لا تُحتسب، ركّز جهدك على المعايير الأخرى.`:""}</li>`;
+  }else{
+    const opt = gapPub<=1.5?"مقال صنف C واحد كمؤلف أول":gapPub<=3?"مقال صنف B واحد كمؤلف أول (أو براءة وطنية INAPI)":gapPub<=4?"مقال صنف A واحد كمؤلف أول":"مقال صنف A+ كمؤلف أول، أو مقال A مع مقال C";
+    h4+=`<li>ينقصك <b>${fmt(gapPub)}</b> نقطة في المنشورات. أقصر طريق: ${opt}.</li>`;
+    if(coAuth>0) h4+=`<li>${coAuth} من منشوراتك لست فيها المؤلف الأول، فتفقد ما بين 50٪ و75٪ من قيمتها. احرص على أن تكون المؤلف الأول في المقال القادم.</li>`;
+    if(!c.pubs.length) h4+="<li>لا يوجد أي منشور، وهذا أكبر نقطة ضعف في ملفك: المنشورات وحدها تساوي ربع العلامة.</li>";
+    prio.push({gain:gapPub,effort:gapPub<=1.5?2:3,t:`نشر ${opt}`,e:gapPub<=1.5?"جهد متوسط (عدة أشهر)":"جهد كبير (قد يتجاوز سنة)"});
+  }
+  const gapI=2-r.confIPts, gapN=1-r.confNPts;
+  if(gapI>1e-9){const n=Math.ceil(gapI/.5);h4+=`<li>تحتاج ${n} مداخلة دولية إضافية لبلوغ حد المداخلات الدولية (+${fmt(gapI)}).</li>`;
+    prio.push({gain:gapI,effort:1,t:`المشاركة بـ ${n} مداخلة دولية إضافية`,e:"جهد منخفض: ملتقيات دولية تُنظم في الجامعات الجزائرية أو عن بعد"});}
+  if(gapN>1e-9){const n=Math.ceil(gapN/.5);h4+=`<li>تحتاج ${n} مداخلة وطنية إضافية (+${fmt(gapN)}).</li>`;
+    prio.push({gain:gapN,effort:1,t:`المشاركة بـ ${n} مداخلة وطنية إضافية`,e:"جهد منخفض"});}
+  if(gapI<=1e-9&&gapN<=1e-9) h4+="<li>المداخلات كاملة (3 نقاط)؛ مداخلات إضافية لن ترفع علامتك.</li>";
+  h4+="</ul>";
+  notes.push({t:"4. المنشورات والمداخلات",v:r.parts[3],cap:8,html:h4});
+
+  // 5 experience
+  const gapE=3-r.parts[4];
+  let h5="<ul>";
+  if(gapE<=1e-9) h5+="<li>الخبرة المهنية بلغت السقف الإجمالي (3 نقاط).</li>";
+  else{
+    h5+=`<li>ينقصك <b>${fmt(gapE)}</b> نقطة للوصول إلى السقف.</li>`;
+    const coursRoom=3-r.exp.cours, tdRoom=1.5-r.exp.td, tpRoom=1.5-r.exp.tp, othRoom=1.5-r.exp.other;
+    if(coursRoom>0){const n=Math.ceil(Math.min(gapE,coursRoom)/.5);h5+=`<li>تدريس الدروس (Cours) هو الأكثر مردودية: ${n} سداسي إضافي يضيف ${fmt(Math.min(gapE,n*.5))}.</li>`;
+      prio.push({gain:Math.min(gapE,n*.5),effort:2,t:`تدريس ${n} سداسي محاضرات (Cours) كأستاذ مؤقت`,e:"جهد متوسط: يتطلب عقداً مؤقتاً مع قسم"});}
+    else if(tdRoom>0||tpRoom>0){h5+=`<li>بقي هامش في TD (${fmt(Math.max(0,tdRoom))}) وTP (${fmt(Math.max(0,tpRoom))}). تذكّر أن TP تُحتسب بالسنة وليس بالسداسي.</li>`;
+      prio.push({gain:Math.min(gapE,Math.max(0,tdRoom)+Math.max(0,tpRoom)),effort:2,t:"تدريس أعمال موجهة أو تطبيقية إضافية",e:"جهد متوسط"});}
+    if(othRoom>0&&r.exp.other===0) h5+="<li>الخبرة في قطاعات أخرى أو مناصب التأطير بعد الشهادة تُحتسب أيضاً (0.5 لكل سنة) إذا كانت مثبتة بوثائق رسمية.</li>";
+  }
+  if(r.rawExp>3+1e-9) h5+=`<li>لديك ${fmt(r.rawExp-3)} نقطة خبرة تتجاوز السقف ولا تُحتسب.</li>`;
+  h5+="</ul>";
+  notes.push({t:"5. الخبرة المهنية",v:r.parts[4],cap:3,html:h5});
+
+  // 6 interview
+  const weak=INTERVIEW.map((l,i)=>({l,i,v:+c.iv[i]})).filter(x=>x.v<1).sort((a,b)=>a.v-b.v);
+  let h6;
+  if(!weak.length) h6="<p>تقديرك الذاتي للمقابلة كامل. تذكر أن المقابلة هي ثاني معيار للفصل عند التساوي.</p>";
+  else{
+    h6="<ul>"+weak.slice(0,3).map(x=>`<li><b>${x.l}</b> (${fmt(x.v)}/1): ${IV_TIPS[x.i]}</li>`).join("")+"</ul>";
+    const g=4-r.parts[5];
+    prio.push({gain:g,effort:1,t:`التحضير للمقابلة، خاصة: ${weak[0].l}`,e:"جهد منخفض: أسابيع من التدريب"});
+  }
+  notes.push({t:"6. المقابلة",v:r.parts[5],cap:4,html:h6});
+
+  prio.sort((a,b)=>b.gain/b.effort-a.gain/a.effort||b.gain-a.gain);
+  return {notes,prio};
+}
+
+function verdictOf(t){
+  if(t>=16)return ["good","ملف قوي جداً","علامة من هذا المستوى تنافس على المراتب الأولى في أغلب التخصصات."];
+  if(t>=13)return ["good","ملف تنافسي","لديك حظوظ جيدة؛ تحسين نقطة أو نقطتين قد يحسم الترتيب."];
+  if(t>=10)return ["mid","ملف متوسط","حظوظك تعتمد على عدد المترشحين. اعمل على الأولويات أدناه."];
+  return ["weak","ملف ضعيف حالياً","ركّز على المعايير القابلة للتحسين قبل المسابقة القادمة."];
+}
+
+function update(){
+  const c=readForm(), r=score(c);
+  const caps=CRIT.map(x=>x[1]);
+  r.parts.forEach((v,i)=>$("p"+(i+1)).innerHTML=`${fmt(v)} <small>/ ${caps[i]}</small>`);
+  $("p4a").innerHTML=`${fmt(r.pubPts)} <small>/ 5</small>`;
+  $("p4b").innerHTML=`${fmt(r.confPts)} <small>/ 3</small>`;
+  pubs.forEach((p,i)=>{const t=PUB_TYPES.find(x=>x.k===p.t),f=ROLES.find(x=>x.k==p.r);const el=$("pv"+i);if(el)el.textContent=fmt(t.v*f.f)});
+  $("senHint").innerHTML=c.phd&&c.open?`${r.yrs} سنة كاملة × 0.25 = ${fmt(Math.min(2,r.yrs*.25))}${r.yrs>8?' <span class="warn">(الحد الأقصى بعد 8 سنوات)</span>':""}`:"أدخل تاريخ الدكتوراه وتاريخ فتح المسابقة.";
+  $("expHint").innerHTML=r.rawExp>3?`<span class="warn">المجموع الخام ${fmt(r.rawExp)} يتجاوز السقف الإجمالي، تُحتسب 3 نقاط فقط.</span>`:`المجموع الخام ${fmt(r.rawExp)} من سقف إجمالي 3 نقاط.`;
+  $("total").textContent=fmt(r.total);
+  const [vc,vl,vt]=verdictOf(r.total);
+  $("verdict").innerHTML=`<span class="chip ${vc}">${vl}</span><span class="hint">${vt}</span>`;
+  $("lines").innerHTML=CRIT.map(([l,cap],i)=>{const v=r.parts[i],pct=Math.min(100,v/cap*100);
+    return `<li><div class="t"><span>${i+1}. ${l}</span><b>${fmt(v)} / ${cap}</b></div><div class="bar"><i class="${v>=cap-1e-9?"full":""}" style="width:${pct}%"></i></div></li>`}).join("")
+    +(r.rawPub>5?`<li class="cap-note">المنشورات: الخام ${fmt(r.rawPub)} ← يُحتسب 5 فقط.</li>`:"");
+  const improvable=(8-r.parts[3])+(3-r.parts[4])+(4-r.parts[5]);
+  const fixed=(2-r.parts[0])+(1-r.parts[1])+(2-r.parts[2]);
+  $("potential").innerHTML=`نقاط يمكنك كسبها بالعمل: <b>${fmt(improvable)}</b><br>نقاط ضائعة في معايير ثابتة (التخصص، التقدير، الأقدمية): <b>${fmt(fixed)}</b>`;
+  INTERVIEW.forEach((_,i)=>$("ivv"+i).textContent=fmt(+$("iv"+i).value));
+
+  const a=assess(c,r);
+  $("prio").innerHTML=a.prio.length?a.prio.map(p=>`<li><div>${p.t}<span class="eff">${p.e}</span></div><span class="gain">+${fmt(p.gain)}</span></li>`).join("")
+    :'<p class="done">كل المعايير القابلة للتحسين في حدها الأقصى. ملفك مكتمل.</p>';
+  $("notes").innerHTML=a.notes.map(n=>`<div class="note"><div class="h"><strong>${n.t}</strong><span>${chip(n.v,n.cap)} <span class="pts" style="font-size:.85rem">${fmt(n.v)}/${n.cap}</span></span></div>${n.html}</div>`).join("");
+}
+
+const SAMPLE={open:today,spec:"2",mention:"1",phd:"2024-06-30",pubs:[{t:"B",r:2},{t:"C",r:1}],confI:2,confN:1,cours:1,td:4,tp:1,other:0,iv:[.75,1,.75,.5]};
+const BLANK={open:today,spec:"2",mention:"1",phd:"",pubs:[],confI:0,confN:0,cours:0,td:0,tp:0,other:0,iv:[0,0,0,0]};
+
+$("interview").innerHTML=INTERVIEW.map((l,i)=>`<div class="slider"><div class="top"><label for="iv${i}" style="color:inherit">${l}</label><b id="ivv${i}">0</b></div><input type="range" id="iv${i}" min="0" max="1" step="0.25" value="0"></div>`).join("");
+fillForm(SAMPLE);
+$("form").addEventListener("input",update);
+$("form").addEventListener("change",update);
+$("addPub").onclick=()=>{pubs.push({t:"B",r:1});renderPubs();update()};
+function setShown(on){["assess","ledger"].forEach(id=>$(id).hidden=!on);$("grid").classList.toggle("solo",!on);
+  document.querySelectorAll("[data-eval]").forEach(b=>b.textContent=on?"تحديث التقييم":"تقييم ملفي");}
+document.querySelectorAll("[data-eval]").forEach(b=>b.onclick=()=>{update();setShown(true);
+  const el=matchMedia("(max-width:900px)").matches?$("ledger"):$("assess");el.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});el.focus({preventScroll:true});});
+$("reset").onclick=()=>{fillForm({...BLANK,open:$("open").value||today});setShown(false)};
+$("sample").onclick=()=>{fillForm(SAMPLE);setShown(false)};
+</script>
