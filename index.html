@@ -10,13 +10,8 @@
   --display:"Reem Kufi","IBM Plex Sans Arabic",system-ui,sans-serif;
   --body:"IBM Plex Sans Arabic",system-ui,"Segoe UI",Tahoma,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --paper:#0f1916; --sheet:#16231f; --ink:#e3ece8; --muted:#94aaa3; --line:#2a3b36;
-  --accent:#4cc39a; --accent-soft:#1b3a30; --seal:#f08a80; --seal-soft:#3b201e; --gold:#e0b64d; --gold-soft:#352c14; --bar-bg:#223430; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --paper:#0f1916; --sheet:#16231f; --ink:#e3ece8; --muted:#94aaa3; --line:#2a3b36;
-  --accent:#4cc39a; --accent-soft:#1b3a30; --seal:#f08a80; --seal-soft:#3b201e; --gold:#e0b64d; --gold-soft:#352c14; --bar-bg:#223430; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6;padding-inline:16px;padding-block:24px 48px}
 .wrap{max-width:1180px;margin-inline:auto;display:flex;flex-direction:column;gap:24px}

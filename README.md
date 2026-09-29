@@ -19,7 +19,7 @@ The interface is in Arabic (right-to-left).
   - points still gainable through work vs. points lost on fixed criteria;
   - improvement priorities ranked by points gained per unit of effort;
   - a note for each criterion with a rating and concrete advice.
-- **Light and dark themes** that follow the system setting.
+- **Light theme** with a fixed palette, regardless of the system setting.
 - **Responsive layout** that works on phones.
 - **Private by design**: all calculation happens in the browser and nothing is stored or sent.
 
@@ -48,7 +48,7 @@ The interface is in Arabic (right-to-left).
 | Layer | Technology |
 |-------|-----------|
 | Markup | HTML5 (`dir="rtl"`, `lang="ar"`) |
-| Styling | Plain CSS: custom properties for theming, Grid and Flexbox for layout |
+| Styling | Plain CSS: custom properties for colors, Grid and Flexbox for layout |
 | Logic | Vanilla JavaScript (ES6), no framework or dependencies |
 | Fonts | Google Fonts: IBM Plex Sans Arabic, Reem Kufi, IBM Plex Mono |
 | Backend | None |
