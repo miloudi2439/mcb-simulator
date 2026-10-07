@@ -32,7 +32,7 @@ The interface is in Arabic (right-to-left).
 | 3 | Degree seniority | 0.25 per full year between the doctorate and the competition opening | 2 |
 | 4a | Publications, patents, books | A+ = 5, A / PCT patent = 4, B / INAPI patent = 3, C = 1.5, ISBN book = 1.5; × author weight (1st 100%, 2nd 50%, 3rd+ 25%) | 5 |
 | 4b | Conference talks | International 0.5 each (max 2); national 0.5 each (max 1) | 3 |
-| 5 | Professional experience | Cours 0.5/semester (max 3); TD 0.25/semester (max 1.5); TP 0.25/year (max 1.5); other sectors / supervision 0.5/year (max 1.5) | 3 (overall) |
+| 5 | Professional experience | Cours 0.5/semester (max 3); TD 0.25/semester (max 1.5); TP 0.25/year (max 1.5); teaching in other sectors or administrative supervision post 0.5/year (max 1.5) | 3 (overall) |
 | 6 | Interview | Analysis & synthesis, clarity of language, communication, scientific skills: 1 point each | 4 |
 | | **Total** | | **20** |
 

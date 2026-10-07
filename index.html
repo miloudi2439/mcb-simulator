@@ -161,7 +161,7 @@ footer{color:var(--muted);font-size:.8rem;max-width:80ch}
           <label>سداسيات دروس Cours (0.5، حد 3)<input type="number" id="cours" min="0" step="1" inputmode="numeric"></label>
           <label>سداسيات أعمال موجهة TD (0.25، حد 1.5)<input type="number" id="td" min="0" step="1" inputmode="numeric"></label>
           <label>سنوات أعمال تطبيقية TP (0.25، حد 1.5)<input type="number" id="tp" min="0" step="1" inputmode="numeric"></label>
-          <label>سنوات خبرة في قطاعات أخرى / تأطير (0.5، حد 1.5)<input type="number" id="other" min="0" step="1" inputmode="numeric"></label>
+          <label>سنوات خبرة كأستاذ أو منصب تأطير إداري (0.5، حد 1.5)<input type="number" id="other" min="0" step="1" inputmode="numeric"></label>
         </div>
         <p class="hint" id="expHint"></p>
       </section>
@@ -326,7 +326,7 @@ function assess(c,r){
       prio.push({gain:Math.min(gapE,n*.5),effort:2,t:`تدريس ${n} سداسي محاضرات (Cours) كأستاذ مؤقت`,e:"جهد متوسط: يتطلب عقداً مؤقتاً مع قسم"});}
     else if(tdRoom>0||tpRoom>0){h5+=`<li>بقي هامش في TD (${fmt(Math.max(0,tdRoom))}) وTP (${fmt(Math.max(0,tpRoom))}). تذكّر أن TP تُحتسب بالسنة وليس بالسداسي.</li>`;
       prio.push({gain:Math.min(gapE,Math.max(0,tdRoom)+Math.max(0,tpRoom)),effort:2,t:"تدريس أعمال موجهة أو تطبيقية إضافية",e:"جهد متوسط"});}
-    if(othRoom>0&&r.exp.other===0) h5+="<li>الخبرة في قطاعات أخرى أو مناصب التأطير بعد الشهادة تُحتسب أيضاً (0.5 لكل سنة) إذا كانت مثبتة بوثائق رسمية.</li>";
+    if(othRoom>0&&r.exp.other===0) h5+="<li>الخبرة كأستاذ في قطاعات أخرى أو في منصب تأطير إداري بعد الشهادة تُحتسب أيضاً (0.5 لكل سنة) إذا كانت مثبتة بوثائق رسمية.</li>";
   }
   if(r.rawExp>3+1e-9) h5+=`<li>لديك ${fmt(r.rawExp-3)} نقطة خبرة تتجاوز السقف ولا تُحتسب.</li>`;
   h5+="</ul>";
