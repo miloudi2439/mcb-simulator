@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://miloudi2439.github.io/mcb-simulator/sitemap.xml

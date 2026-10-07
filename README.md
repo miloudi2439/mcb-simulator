@@ -72,6 +72,17 @@ python3 -m http.server 8000
 
 Upload `index.html` to any static host: GitHub Pages, Netlify, Vercel, Cloudflare Pages, or a university web server.
 
+## Files
+
+| File | Purpose |
+|------|---------|
+| `index.html` | The whole app, plus search metadata (description, canonical URL, Open Graph, JSON-LD `WebApplication` and `FAQPage`) |
+| `robots.txt` | Allows all crawlers and points to the sitemap |
+| `sitemap.xml` | Lists the page for search engines |
+| `og.png` | 1200×630 preview image shown when the link is shared |
+
+The live URL is assumed to be `https://miloudi2439.github.io/mcb-simulator/`. If it changes (for example with a custom domain), update the canonical, `og:url`, `og:image` and JSON-LD URLs in `index.html`, plus `robots.txt` and `sitemap.xml`.
+
 ## Code structure
 
 All logic lives in the `<script>` block at the end of `index.html`.
