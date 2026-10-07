@@ -13,7 +13,7 @@ The interface is in Arabic (right-to-left).
 - **Score calculation across the six criteria** of the ministerial grid, with all sub-caps and global caps enforced.
 - **Publication list** where each item has a type (A+, A, B, C, patent, book) and an author position that applies the contribution weighting.
 - **Automatic seniority** computed from the doctorate date and the competition opening date, counted in full years.
-- **Evaluate button** (`تقييم ملفي`): the final mark panel and the assessment stay hidden until the user asks for them.
+- **Evaluate button** (`تقييم ملفي`): opens a popup with the final mark and the assessment.
 - **Profile assessment**:
   - an overall verdict (very strong / competitive / average / weak);
   - points still gainable through work vs. points lost on fixed criteria;
@@ -86,7 +86,7 @@ All logic lives in the `<script>` block at the end of `index.html`.
 | `assess(c, r)` | Builds the improvement priorities and per-criterion notes |
 | `verdictOf(total)` | Maps the total to an overall verdict |
 | `update()` | Recomputes everything and refreshes the page on every input |
-| `setShown(on)` | Shows or hides the final mark panel and the assessment |
+| `#evalBtn` handler | Recomputes and opens the result popup (`<dialog id="result">`) |
 
 To adapt the grid (for example if the ministry changes point values), edit the constants at the top of the script and the caps inside `score()`.
 
