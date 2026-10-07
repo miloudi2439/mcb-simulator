@@ -76,6 +76,12 @@ input[type=range]{accent-color:var(--accent);width:100%}
 /* ledger */
 aside.ledger{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:14px}
 .actions{position:sticky;bottom:0;padding-block:12px calc(12px + env(safe-area-inset-bottom,0px));background:var(--paper);border-top:1px solid var(--line);z-index:2}
+@media (max-width:520px){
+  .actions{flex-wrap:nowrap;gap:6px;padding-block:8px calc(8px + env(safe-area-inset-bottom,0px))}
+  .actions #evalBtn{flex:1}
+  .actions .btn.ghost{padding:8px 12px;white-space:nowrap}
+  .actions .lg{display:none}
+}
 /* dialog */
 dialog.result{width:min(1040px,calc(100vw - 24px));max-width:none;max-height:calc(100dvh - 24px);padding:0;border:1px solid var(--line);border-radius:12px;background:var(--paper);color:var(--ink);overflow:auto;overscroll-behavior:contain}
 dialog.result::backdrop{background:rgb(12 32 27 / .55)}
@@ -222,8 +228,8 @@ footer{color:var(--muted);font-size:.8rem;max-width:80ch}
 
       <div class="row actions">
         <button type="button" class="btn" id="evalBtn">تقييم ملفي</button>
-        <button type="button" class="btn ghost" id="reset">إفراغ الاستمارة</button>
-        <button type="button" class="btn ghost" id="sample">تحميل مثال</button>
+        <button type="button" class="btn ghost" id="reset" aria-label="إفراغ الاستمارة">إفراغ<span class="lg"> الاستمارة</span></button>
+        <button type="button" class="btn ghost" id="sample" aria-label="تحميل مثال"><span class="lg">تحميل </span>مثال</button>
       </div>
     </form>
   </div>
