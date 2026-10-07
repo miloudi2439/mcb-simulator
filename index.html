@@ -110,20 +110,19 @@ footer{color:var(--muted);font-size:.8rem;max-width:80ch}
 
       <section class="crit">
         <div class="crit-head"><h2><span>1</span>ملاءمة شعبة وتخصص الشهادة</h2><div class="pts" id="p1"></div></div>
-        <label>ترتيب تخصصك في إعلان الجامعة
-          <select id="spec">
-            <option value="2">التخصص الأول المطلوب مباشرة — 2</option>
-            <option value="1.75">تخصص قريب (الترتيب 2) — 1.75</option>
-            <option value="1.5">تخصص قريب (الترتيب 3) — 1.5</option>
-            <option value="1.25">تخصص قريب (الترتيب 4) — 1.25</option>
-            <option value="1">تخصص ذو صلة (الترتيب 5) — 1</option>
-            <option value="0.75">تخصص ذو صلة (الترتيب 6) — 0.75</option>
-            <option value="0.5">تخصص ذو صلة (الترتيب 7) — 0.5</option>
-            <option value="0.25">تخصص ذو صلة (الترتيب 8) — 0.25</option>
-            <option value="0">غير مطابق — 0</option>
-          </select>
-        </label>
-        <p class="hint">تحدد اللجنة قيمة التخصصات القريبة بين 0.25 و1.75 حسب ترتيبها في الإعلان وديمغرافية الشعبة.</p>
+        <div class="fields">
+          <label>شعبة شهادتك حسب الإعلان
+            <select id="div">
+              <option value="1">الشعبة الأولى المطلوبة — 1</option>
+              <option value="0.75">الشعبة الثانية المطلوبة — 0.75</option>
+              <option value="0">شعبة غير مطلوبة — 0</option>
+            </select>
+          </label>
+          <label>تخصصك داخل هذه الشعبة
+            <select id="sp"></select>
+          </label>
+        </div>
+        <p class="hint" id="specHint"></p>
       </section>
 
       <section class="crit">
@@ -230,7 +229,7 @@ function fullYears(from,to){
 }
 
 function score(c){
-  const s1=+c.spec, s2=+c.mention;
+  const s1=+c.div>0?+c.div+(+c.sp):0, s2=+c.mention;
   const yrs=fullYears(c.phd,c.open), s3=Math.min(2,yrs*.25);
   const rawPub=c.pubs.reduce((t,p)=>t+(PUB_TYPES.find(x=>x.k===p.t)?.v||0)*(ROLES.find(r=>r.k==p.r)?.f||0),0);
   const pubPts=Math.min(5,rawPub);
@@ -244,18 +243,23 @@ function score(c){
 }
 
 function readForm(){
-  return {open:$("open").value,spec:$("spec").value,mention:$("mention").value,phd:$("phd").value,pubs,
+  return {open:$("open").value,div:$("div").value,sp:$("sp").value,mention:$("mention").value,phd:$("phd").value,pubs,
     confI:num("confI"),confN:num("confN"),cours:num("cours"),td:num("td"),tp:num("tp"),other:num("other"),
     iv:INTERVIEW.map((_,i)=>$("iv"+i).value)};
 }
 function fillForm(c){
-  $("open").value=c.open||today;$("spec").value=c.spec;$("mention").value=c.mention;$("phd").value=c.phd||"";
+  $("open").value=c.open||today;$("div").value=c.div;renderSp(c.sp);$("mention").value=c.mention;$("phd").value=c.phd||"";
   pubs=(c.pubs||[]).map(p=>({...p}));
   ["confI","confN","cours","td","tp","other"].forEach(k=>$(k).value=c[k]||0);
   INTERVIEW.forEach((_,i)=>$("iv"+i).value=c.iv?.[i]??0);
   renderPubs();update();
 }
 
+const SP_OPTS={"1":[["1","التخصص الأول المطلوب — 1"],["0.75","التخصص الثاني — 0.75"],["0.5","التخصص الثالث — 0.5"],["0.25","تخصص آخر في الشعبة — 0.25"]],
+  "0.75":[["0.75","التخصص الأول المطلوب — 0.75"],["0.5","التخصص الثاني — 0.5"],["0.25","تخصص آخر في الشعبة — 0.25"]],"0":[]};
+function renderSp(keep){const d=$("div").value,opts=SP_OPTS[d],sel=$("sp"),cur=keep??sel.value;
+  sel.innerHTML=opts.length?opts.map(([v,l])=>`<option value="${v}">${l}</option>`).join(""):'<option value="0">—</option>';
+  sel.disabled=!opts.length;sel.value=opts.some(o=>o[0]===String(cur))?String(cur):(opts[0]?.[0]??"0");}
 function renderPubs(){
   const box=$("pubs");box.innerHTML="";
   if(!pubs.length){box.innerHTML='<p class="hint">لا توجد منشورات بعد.</p>';return;}
@@ -281,7 +285,7 @@ function assess(c,r){
   const s1=r.parts[0];
   notes.push({t:"1. ملاءمة التخصص",v:s1,cap:2,html: s1>=2
     ? "<p>تخصصك هو المطلوب مباشرة في الإعلان، وهذه أفضل وضعية ممكنة.</p>"
-    : `<p>تفقد <b>${fmt(2-s1)}</b> نقطة لأن تخصصك ليس الأول في الإعلان. لا يمكن تحسين هذا المعيار بعد الإيداع.</p><ul><li>استهدف المناصب التي يرد فيها تخصصك بالضبط في المرتبة الأولى.</li><li>راجع تسمية تخصصك في الشهادة ومحضر المناقشة وقارنها حرفياً مع الإعلان.</li></ul>`});
+    : `<p>تفقد <b>${fmt(2-s1)}</b> نقطة لأن ${+c.div<1?"شعبتك ليست الشعبة الأولى المطلوبة":"تخصصك ليس التخصص الأول المطلوب"} في الإعلان. لا يمكن تحسين هذا المعيار بعد الإيداع.</p><ul><li>استهدف المناصب التي يرد فيها تخصصك بالضبط في المرتبة الأولى.</li><li>راجع تسمية تخصصك في الشهادة ومحضر المناقشة وقارنها حرفياً مع الإعلان.</li></ul>`});
   // 2 mention
   notes.push({t:"2. تقدير الشهادة",v:r.parts[1],cap:1,html: r.parts[1]>=1
     ? "<p>تقدير مشرف جداً يمنحك النقطة كاملة.</p>"
@@ -363,6 +367,7 @@ function update(){
   pubs.forEach((p,i)=>{const t=PUB_TYPES.find(x=>x.k===p.t),f=ROLES.find(x=>x.k==p.r);const el=$("pv"+i);if(el)el.textContent=fmt(t.v*f.f)});
   $("senHint").innerHTML=c.phd&&c.open?`${r.yrs} سنة كاملة × 0.25 = ${fmt(Math.min(2,r.yrs*.25))}${r.yrs>8?' <span class="warn">(الحد الأقصى بعد 8 سنوات)</span>':""}`:"أدخل تاريخ الدكتوراه وتاريخ فتح المسابقة.";
   $("expHint").innerHTML=r.rawExp>3?`<span class="warn">المجموع الخام ${fmt(r.rawExp)} يتجاوز السقف الإجمالي، تُحتسب 3 نقاط فقط.</span>`:`المجموع الخام ${fmt(r.rawExp)} من سقف إجمالي 3 نقاط.`;
+  $("specHint").textContent=+c.div>0?`علامة الشعبة ${fmt(+c.div)} + علامة التخصص ${fmt(+c.sp)} = ${fmt(r.parts[0])}`:"شهادة من شعبة غير مطلوبة في الإعلان لا تمنح نقاطاً في هذا المعيار.";
   $("total").textContent=fmt(r.total);
   const [vc,vl,vt]=verdictOf(r.total);
   $("verdict").innerHTML=`<span class="chip ${vc}">${vl}</span><span class="hint">${vt}</span>`;
@@ -380,11 +385,12 @@ function update(){
   $("notes").innerHTML=a.notes.map(n=>`<div class="note"><div class="h"><strong>${n.t}</strong><span>${chip(n.v,n.cap)} <span class="pts" style="font-size:.85rem">${fmt(n.v)}/${n.cap}</span></span></div>${n.html}</div>`).join("");
 }
 
-const SAMPLE={open:today,spec:"2",mention:"1",phd:"2024-06-30",pubs:[{t:"B",r:2},{t:"C",r:1}],confI:2,confN:1,cours:1,td:4,tp:1,other:0,iv:[.75,1,.75,.5]};
-const BLANK={open:today,spec:"2",mention:"1",phd:"",pubs:[],confI:0,confN:0,cours:0,td:0,tp:0,other:0,iv:[0,0,0,0]};
+const SAMPLE={open:today,div:"1",sp:"1",mention:"1",phd:"2024-06-30",pubs:[{t:"B",r:2},{t:"C",r:1}],confI:2,confN:1,cours:1,td:4,tp:1,other:0,iv:[.75,1,.75,.5]};
+const BLANK={open:today,div:"1",sp:"1",mention:"1",phd:"",pubs:[],confI:0,confN:0,cours:0,td:0,tp:0,other:0,iv:[0,0,0,0]};
 
 $("interview").innerHTML=INTERVIEW.map((l,i)=>`<div class="slider"><div class="top"><label for="iv${i}" style="color:inherit">${l}</label><b id="ivv${i}">0</b></div><input type="range" id="iv${i}" min="0" max="1" step="0.25" value="0"></div>`).join("");
 fillForm(SAMPLE);
+$("div").addEventListener("change",()=>renderSp());
 $("form").addEventListener("input",update);
 $("form").addEventListener("change",update);
 $("addPub").onclick=()=>{pubs.push({t:"B",r:1});renderPubs();update()};

@@ -27,7 +27,7 @@ The interface is in Arabic (right-to-left).
 
 | # | Criterion | Rule | Max |
 |---|-----------|------|-----|
-| 1 | Fit of the degree's field and specialty | 2 if first-priority specialty; 0.25–1.75 for related specialties | 2 |
+| 1 | Fit of the degree's field (شعبة) and specialty | Division points + specialty points. 1st required division = 1, plus specialty: 1st 1, 2nd 0.75, 3rd 0.5, other 0.25. 2nd required division = 0.75, plus specialty: 1st 0.75, 2nd 0.5, other 0.25 | 2 |
 | 2 | Degree grade | Très Honorable = 1; Honorable / equivalent foreign degree = 0.5 | 1 |
 | 3 | Degree seniority | 0.25 per full year between the doctorate and the competition opening | 2 |
 | 4a | Publications, patents, books | A+ = 5, A / PCT patent = 4, B / INAPI patent = 3, C = 1.5, ISBN book = 1.5; × author weight (1st 100%, 2nd 50%, 3rd+ 25%) | 5 |
@@ -38,7 +38,7 @@ The interface is in Arabic (right-to-left).
 
 ### Assumptions
 
-- Related specialties are mapped by their rank in the announcement: rank 2 = 1.75, decreasing by 0.25 per rank down to 0.25. In practice the committee sets this value.
+- A degree from a division not listed in the announcement scores 0 on criterion 1.
 - The author-position weighting is also applied to books.
 - The interview score is the user's own estimate.
 - The verdict thresholds (16 / 13 / 10) and the effort levels in the priorities are heuristics, not part of the official grid. The mark actually needed to pass depends on the number of candidates in each specialty.
